@@ -1,45 +1,39 @@
 #IP address
+require 'awesome_print'
+
 
 puts("How many lines? ")
 n = gets.chomp.to_i
 
-ip_address = Array.new
+ip_addresses = Array.new
 
 n.times do
-ip_address << gets.chomp
+  ip_addresses << gets.chomp
 end
 
-ip_address.each do |check|
+ip_addresses.each do |ip_address|
 #checking each ip address from the array
 
-  if (check.length >= 7 && check.length <= 15)
-    new_array = Array.new
-    new_array << check
-    if new_array.include?(".")
-      new_array_a = check.split(".")
-      if new_array_a.all? {|x| x >= 0 && x <= 255}
-        new_array_a = new_array_a.join
-        new_array_a.each do |x|
-        if  x =~ /[0-9]/
+  if (ip_address.length == 15)
+    three_digit_strings = ip_address.split('.')
+    if three_digit_strings.count == 4
+      three_digit_ints = three_digit_strings.map(&:to_i)
+      if three_digit_ints.all? {|x| x >= 0 && x <= 255}
         puts("IPv4")
       end
     end
 
-  elsif check.length == 39
-    new_array_two = Array.new
-    new_array_two << check
-    if new_array_two.include?(":")
-      new_array_two_a = check.split(":")
-      if new_array_two_a.all? {|x| x =~ /[[:xdigit:]]/}
-      new_array_two_a = new_array_two_a.join
+  elsif ip_address.length == 39
+    four_digit_strings = ip_address.split(':')
+    if four_digit_strings.count == 8
+      if four_digit_strings.map {|x| x =~ /[a-fA-F\d]/}
         puts("IPv6")
       end
     end
 
-    else
-      puts("neither")
-    end
-
+  else
+    puts("neither")
   end
+
 end
-end
+
